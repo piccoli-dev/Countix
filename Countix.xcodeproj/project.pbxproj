@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		63A100122F961F2B0041BC54 /* CountixWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 63A100022F961F2B0041BC54 /* CountixWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		630B3DCC2F961F2B0041BC54 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,12 +25,34 @@
 			remoteGlobalIDString = 630B3DBD2F961F2A0041BC54;
 			remoteInfo = Countix;
 		};
+		63A100052F961F2B0041BC54 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 630B3DB62F961F2A0041BC54 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63A100032F961F2B0041BC54;
+			remoteInfo = CountixWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		63A100132F961F2B0041BC54 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				63A100122F961F2B0041BC54 /* CountixWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		630B3DBE2F961F2A0041BC54 /* Countix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Countix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		630B3DCB2F961F2B0041BC54 /* CountixTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountixTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		630B3DD52F961F2B0041BC54 /* CountixUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CountixUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		63A100022F961F2B0041BC54 /* CountixWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CountixWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -43,6 +69,11 @@
 		630B3DD82F961F2B0041BC54 /* CountixUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = CountixUITests;
+			sourceTree = "<group>";
+		};
+		63A100012F961F2B0041BC54 /* CountixWidgetExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = CountixWidgetExtension;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +100,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63A100092F961F2B0041BC54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +116,7 @@
 				630B3DC02F961F2A0041BC54 /* Countix */,
 				630B3DCE2F961F2B0041BC54 /* CountixTests */,
 				630B3DD82F961F2B0041BC54 /* CountixUITests */,
+				63A100012F961F2B0041BC54 /* CountixWidgetExtension */,
 				630B3DBF2F961F2A0041BC54 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +127,7 @@
 				630B3DBE2F961F2A0041BC54 /* Countix.app */,
 				630B3DCB2F961F2B0041BC54 /* CountixTests.xctest */,
 				630B3DD52F961F2B0041BC54 /* CountixUITests.xctest */,
+				63A100022F961F2B0041BC54 /* CountixWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,10 +142,12 @@
 				630B3DBA2F961F2A0041BC54 /* Sources */,
 				630B3DBB2F961F2A0041BC54 /* Frameworks */,
 				630B3DBC2F961F2A0041BC54 /* Resources */,
+				63A100132F961F2B0041BC54 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				63A100062F961F2B0041BC54 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				630B3DC02F961F2A0041BC54 /* Countix */,
@@ -163,6 +205,28 @@
 			productReference = 630B3DD52F961F2B0041BC54 /* CountixUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		63A100032F961F2B0041BC54 /* CountixWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63A100102F961F2B0041BC54 /* Build configuration list for PBXNativeTarget "CountixWidgetExtension" */;
+			buildPhases = (
+				63A100082F961F2B0041BC54 /* Sources */,
+				63A100092F961F2B0041BC54 /* Frameworks */,
+				63A1000A2F961F2B0041BC54 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				63A100012F961F2B0041BC54 /* CountixWidgetExtension */,
+			);
+			name = CountixWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = CountixWidgetExtension;
+			productReference = 63A100022F961F2B0041BC54 /* CountixWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +248,9 @@
 						CreatedOnToolsVersion = 26.3;
 						TestTargetID = 630B3DBD2F961F2A0041BC54;
 					};
+					63A100032F961F2B0041BC54 = {
+						CreatedOnToolsVersion = 26.3;
+					};
 				};
 			};
 			buildConfigurationList = 630B3DB92F961F2A0041BC54 /* Build configuration list for PBXProject "Countix" */;
@@ -203,6 +270,7 @@
 				630B3DBD2F961F2A0041BC54 /* Countix */,
 				630B3DCA2F961F2B0041BC54 /* CountixTests */,
 				630B3DD42F961F2B0041BC54 /* CountixUITests */,
+				63A100032F961F2B0041BC54 /* CountixWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +291,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		630B3DD32F961F2B0041BC54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		63A1000A2F961F2B0041BC54 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +328,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		63A100082F961F2B0041BC54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +347,11 @@
 			isa = PBXTargetDependency;
 			target = 630B3DBD2F961F2A0041BC54 /* Countix */;
 			targetProxy = 630B3DD62F961F2B0041BC54 /* PBXContainerItemProxy */;
+		};
+		63A100062F961F2B0041BC54 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63A100032F961F2B0041BC54 /* CountixWidgetExtension */;
+			targetProxy = 63A100052F961F2B0041BC54 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -388,8 +475,10 @@
 		630B3DE02F961F2B0041BC54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_SHORTCUTS_ENABLE_FLEXIBLE_MATCHING = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Countix/Countix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
@@ -408,10 +497,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.Countix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -425,15 +514,17 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
 			};
 			name = Debug;
 		};
 		630B3DE12F961F2B0041BC54 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APP_SHORTCUTS_ENABLE_FLEXIBLE_MATCHING = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Countix/Countix.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
@@ -452,10 +543,10 @@
 				"INFOPLIST_KEY_UIStatusBarStyle[sdk=iphonesimulator*]" = UIStatusBarStyleDefault;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.Countix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -469,7 +560,7 @@
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
 			};
 			name = Release;
 		};
@@ -481,8 +572,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.CountixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -495,7 +586,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Countix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Countix";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
 			};
 			name = Debug;
 		};
@@ -507,8 +598,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.CountixTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -521,7 +612,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Countix.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Countix";
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
 			};
 			name = Release;
 		};
@@ -532,8 +623,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.CountixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -546,7 +637,7 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = Countix;
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
 			};
 			name = Debug;
 		};
@@ -557,8 +648,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 7R63H8943D;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
-				MACOSX_DEPLOYMENT_TARGET = 26.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				MACOSX_DEPLOYMENT_TARGET = 17;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.CountixUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -571,7 +662,65 @@
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2,7";
 				TEST_TARGET_NAME = Countix;
-				XROS_DEPLOYMENT_TARGET = 26.2;
+				XROS_DEPLOYMENT_TARGET = 17;
+			};
+			name = Release;
+		};
+		63A1000E2F961F2B0041BC54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = CountixWidgetExtension/CountixWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7R63H8943D;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "CountixWidgetExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.Countix.CountixWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		63A1000F2F961F2B0041BC54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = CountixWidgetExtension/CountixWidgetExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 7R63H8943D;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "CountixWidgetExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.piccolidev.Countix.CountixWidgetExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -610,6 +759,15 @@
 			buildConfigurations = (
 				630B3DE62F961F2B0041BC54 /* Debug */,
 				630B3DE72F961F2B0041BC54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		63A100102F961F2B0041BC54 /* Build configuration list for PBXNativeTarget "CountixWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63A1000E2F961F2B0041BC54 /* Debug */,
+				63A1000F2F961F2B0041BC54 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -10,6 +10,13 @@ struct HomeView: View {
         viewModel.filteredEvents(from: events)
     }
 
+    private var syncToken: String {
+        events
+            .sorted { $0.eventDate < $1.eventDate }
+            .map { "\($0.id.uuidString)|\($0.title)|\($0.eventDate.timeIntervalSince1970)|\($0.displayMode.rawValue)" }
+            .joined(separator: "::")
+    }
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -47,6 +54,12 @@ struct HomeView: View {
                 .padding(.bottom, 10)
             }
             .navigationBarHidden(true)
+        }
+        .task {
+            SharedEventStore.save(events: events)
+        }
+        .onChange(of: syncToken) { _, _ in
+            SharedEventStore.save(events: events)
         }
         .sheet(isPresented: $viewModel.isPresentingForm) {
             EventFormView { newEvent in
