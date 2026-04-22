@@ -8,15 +8,15 @@ struct CalendarStripView: View {
     let onToday: () -> Void
 
     private let calendar = Calendar.autoupdatingCurrent
-    private let columns = Array(repeating: GridItem(.flexible(), spacing: 8), count: 7)
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: Constants.spacing * 2), count: 7)
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: Constants.spacing * 4.5) {
             header
             weekdayHeader
             monthGrid
         }
-        .padding(18)
+        .padding(Constants.spacing * 4.5)
         .background(
             RoundedRectangle(cornerRadius: 30, style: .continuous)
                 .fill(.regularMaterial)
@@ -29,13 +29,13 @@ struct CalendarStripView: View {
     }
     
     private var header: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: Constants.spacing) {
             
             Text(DateFormatting.monthTitle.string(from: selectedDate))
                 .font(.title3.weight(.semibold))
             
 
-            HStack(spacing: 10) {
+            HStack(spacing: Constants.spacing * 2.5) {
                 Spacer()
                 Button(action: onPreviousMonth) {
                     Image(systemName: "chevron.left")
@@ -46,8 +46,8 @@ struct CalendarStripView: View {
 
                 Button("Today", action: onToday)
                     .font(.subheadline.weight(.semibold))
-                    .padding(.horizontal, 14)
-                    .padding(.vertical, 9)
+                    .padding(.horizontal, Constants.spacing * 3.5)
+                    .padding(.vertical, Constants.spacing * 2.25)
                     .background(.thinMaterial, in: Capsule())
 
                 Button(action: onNextMonth) {
@@ -61,7 +61,7 @@ struct CalendarStripView: View {
     }
 
     private var weekdayHeader: some View {
-        LazyVGrid(columns: columns, spacing: 10) {
+        LazyVGrid(columns: columns, spacing: Constants.spacing * 2.5) {
             ForEach(weekdaySymbols, id: \.self) { symbol in
                 Text(symbol)
                     .font(.caption.weight(.semibold))
@@ -72,7 +72,7 @@ struct CalendarStripView: View {
     }
 
     private var monthGrid: some View {
-        LazyVGrid(columns: columns, spacing: 10) {
+        LazyVGrid(columns: columns, spacing: Constants.spacing * 2.5) {
             ForEach(monthCells) { cell in
                 if let date = cell.date {
                     dayCell(for: date)
@@ -94,7 +94,7 @@ struct CalendarStripView: View {
                 selectedDate = calendar.startOfDay(for: date)
             }
         } label: {
-            VStack(spacing: 6) {
+            VStack(spacing: Constants.spacing * 1.5) {
                 Text(DateFormatting.dayNumber.string(from: date))
                     .font(.body.weight(.bold))
                     .foregroundStyle(isSelected ? .white : .primary)
@@ -110,7 +110,7 @@ struct CalendarStripView: View {
                             .frame(width: 12, height: 12)
                     }
                 }
-                .frame(height: 12)
+                .frame(height: Constants.spacing * 3)
             }
             .frame(maxWidth: .infinity)
             .frame(height: 52)

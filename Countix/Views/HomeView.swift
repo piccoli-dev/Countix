@@ -23,7 +23,7 @@ struct HomeView: View {
                 backgroundView
 
                 ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 22) {
+                    VStack(alignment: .leading, spacing: Constants.spacing * 5.5) {
                         header
                         CalendarStripView(
                             selectedDate: $viewModel.selectedDate,
@@ -34,9 +34,9 @@ struct HomeView: View {
                         )
                         eventsSection
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 20)
-                    .padding(.bottom, 120)
+                    .padding(.horizontal, Constants.spacing * 5)
+                    .padding(.top, Constants.spacing * 5)
+                    .padding(.bottom, Constants.spacing * 30)
                 }
             }
             .safeAreaInset(edge: .bottom) {
@@ -49,9 +49,9 @@ struct HomeView: View {
                         }
                     }
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 8)
-                .padding(.bottom, 10)
+                .padding(.horizontal, Constants.spacing * 5)
+                .padding(.top, Constants.spacing * 2)
+                .padding(.bottom, Constants.spacing * 2.5)
             }
             .navigationBarHidden(true)
         }
@@ -99,7 +99,7 @@ struct HomeView: View {
     }
 
     private var header: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: Constants.spacing * 2.5) {
             Text(viewModel.title)
                 .font(.system(size: 34, weight: .bold, design: .rounded))
 
@@ -107,7 +107,7 @@ struct HomeView: View {
                 .font(.body)
                 .foregroundStyle(.secondary)
 
-            HStack(spacing: 10) {
+            HStack(spacing: Constants.spacing * 2.5) {
                 Label("\(events.count) total", systemImage: "clock.badge")
                 Label("\(filteredEvents.count) today", systemImage: "calendar")
             }
@@ -117,7 +117,7 @@ struct HomeView: View {
     }
 
     private var eventsSection: some View {
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: Constants.spacing * 4) {
             HStack {
                 Text("Events")
                     .font(.title2.weight(.semibold))
@@ -133,7 +133,7 @@ struct HomeView: View {
                 EmptyStateView(selectedDate: viewModel.selectedDate)
                     .transition(.opacity.combined(with: .move(edge: .bottom)))
             } else {
-                LazyVStack(spacing: 16) {
+                LazyVStack(spacing: Constants.spacing * 4) {
                     ForEach(filteredEvents) { event in
                         EventCardView(event: event)
                     }

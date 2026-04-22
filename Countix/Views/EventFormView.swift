@@ -20,11 +20,11 @@ struct EventFormView: View {
                 .ignoresSafeArea()
 
                 ScrollView(showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 20) {
+                    VStack(alignment: .leading, spacing: Constants.spacing * 5) {
                         introCard
                         formCard
                     }
-                    .padding(20)
+                    .padding(Constants.spacing * 5)
                 }
             }
             .navigationTitle("New Event")
@@ -49,7 +49,7 @@ struct EventFormView: View {
     }
 
     private var introCard: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack(alignment: .leading, spacing: Constants.spacing * 2.5) {
             Text("Design a new countdown")
                 .font(.title2.weight(.bold))
 
@@ -57,7 +57,7 @@ struct EventFormView: View {
                 .font(.body)
                 .foregroundStyle(.secondary)
         }
-        .padding(20)
+        .padding(Constants.spacing * 5)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(
             RoundedRectangle(cornerRadius: 28, style: .continuous)
@@ -74,7 +74,7 @@ struct EventFormView: View {
             fieldContainer(title: "Title") {
                 TextField("Conference opening, anniversary, departure...", text: $viewModel.title)
                     .textInputAutocapitalization(.words)
-                    .padding(14)
+                    .padding(Constants.spacing * 3.5)
                     .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
             
@@ -100,7 +100,7 @@ struct EventFormView: View {
                 .pickerStyle(.inline)
             }
         }
-        .padding(20)
+        .padding(Constants.spacing * 5)
         .background(
             RoundedRectangle(cornerRadius: 30, style: .continuous)
                 .fill(.ultraThinMaterial)

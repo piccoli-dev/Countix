@@ -5,7 +5,7 @@ struct GlassAddButton: View {
 
     var body: some View {
         Button(action: action) {
-            HStack(spacing: 12) {
+            HStack(spacing: Constants.spacing * 3) {
                 ZStack {
                     Circle()
                         .fill(.white.opacity(0.22))
@@ -20,8 +20,8 @@ struct GlassAddButton: View {
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(.white)
             }
-            .padding(.horizontal, 18)
-            .padding(.vertical, 14)
+            .padding(.horizontal, Constants.spacing * 4.5)
+            .padding(.vertical, Constants.spacing * 3.5)
             .background {
                 ZStack {
                     Capsule(style: .continuous)

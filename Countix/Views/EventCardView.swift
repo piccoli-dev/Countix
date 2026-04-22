@@ -8,9 +8,9 @@ struct EventCardView: View {
             let countdown = CountdownFormatter.countdownText(to: event.eventDate, mode: event.displayMode, now: context.date)
             let isPassed = event.eventDate < context.date
 
-            VStack(alignment: .leading, spacing: 18) {
-                HStack(alignment: .top, spacing: 16) {
-                    VStack(alignment: .leading, spacing: 6) {
+            VStack(alignment: .leading, spacing: Constants.spacing * 4.5) {
+                HStack(alignment: .top, spacing: Constants.spacing * 4) {
+                    VStack(alignment: .leading, spacing: Constants.spacing * 1.5) {
                         Text(event.title)
                             .font(.title3.weight(.semibold))
                             .foregroundStyle(.primary)
@@ -29,7 +29,7 @@ struct EventCardView: View {
                     statusBadge(isPassed: isPassed)
                 }
 
-                VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: Constants.spacing * 2) {
                     Label(event.displayMode.title, systemImage: event.displayMode.symbolName)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(.secondary)
@@ -40,7 +40,7 @@ struct EventCardView: View {
                         .contentTransition(.numericText())
                 }
             }
-            .padding(20)
+            .padding(Constants.spacing * 5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(cardBackground)
         }
@@ -59,8 +59,8 @@ struct EventCardView: View {
     private func statusBadge(isPassed: Bool) -> some View {
         Text(isPassed ? "Passed" : "Upcoming")
             .font(.caption.weight(.bold))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 8)
+            .padding(.horizontal, Constants.spacing * 3)
+            .padding(.vertical, Constants.spacing * 2)
             .background(
                 Capsule()
                     .fill(isPassed ? Color.secondary.opacity(0.16) : Color.accentColor.opacity(0.14))
