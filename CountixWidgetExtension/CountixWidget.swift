@@ -6,7 +6,7 @@ struct CountixWidgetEntry: TimelineEntry {
     let event: WidgetEventSnapshot?
 }
 
-struct CountixWidgetProvider: TimelineProvider {
+struct CountixWidgetProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> CountixWidgetEntry {
         CountixWidgetEntry(
             date: .now,
@@ -19,18 +19,18 @@ struct CountixWidgetProvider: TimelineProvider {
         )
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (CountixWidgetEntry) -> Void) {
-        completion(CountixWidgetEntry(date: .now, event: WidgetSharedEventStore.loadUpcomingEvent()))
+    func snapshot(for configuration: CountixIntent, in context: Context) async -> CountixWidgetEntry {
+        CountixWidgetEntry(date: .now, event: WidgetSharedEventStore.loadEvent(with: configuration.selectedEvent?.id))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<CountixWidgetEntry>) -> Void) {
-        let event = WidgetSharedEventStore.loadUpcomingEvent()
+    func timeline(for configuration: CountixIntent, in context: Context) async -> Timeline<CountixWidgetEntry> {
+        let event = WidgetSharedEventStore.loadEvent(with: configuration.selectedEvent?.id)
         let entry = CountixWidgetEntry(date: .now, event: event)
         let nextUpdate = Date().addingTimeInterval(
             WidgetCountdownFormatter.refreshInterval(for: event?.displayMode ?? .full)
         )
 
-        completion(Timeline(entries: [entry], policy: .after(nextUpdate)))
+        return Timeline(entries: [entry], policy: .after(nextUpdate))
     }
 }
 
@@ -107,7 +107,7 @@ struct CountixWidget: Widget {
     let kind = "CountixWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: CountixWidgetProvider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: CountixIntent.self, provider: CountixWidgetProvider()) { entry in
             CountixWidgetEntryView(entry: entry)
         }
         .configurationDisplayName("Event Countdown")
