@@ -1,35 +1,66 @@
-//
-//  CountixTests.swift
-//  CountixTests
-//
-//  Created by Francesca Piccoli on 20/04/2026.
-//
-
 import XCTest
+@testable import Countix
 
+@MainActor
 final class CountixTests: XCTestCase {
+    func testMakeDraftTrimsTitleAndCombinesDateAndTime() {
+        let viewModel = EventFormViewModel()
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        viewModel.title = "  Product Launch  "
+        viewModel.eventDate = calendar.date(from: DateComponents(year: 2026, month: 6, day: 10))!
+        viewModel.eventTime = calendar.date(from: DateComponents(hour: 14, minute: 45))!
+        viewModel.displayMode = .minutesOnly
+
+        let draft = viewModel.makeDraft()
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: draft.eventDate)
+
+        XCTAssertEqual(draft.title, "Product Launch")
+        XCTAssertEqual(draft.displayMode, .minutesOnly)
+        XCTAssertEqual(components.year, 2026)
+        XCTAssertEqual(components.month, 6)
+        XCTAssertEqual(components.day, 10)
+        XCTAssertEqual(components.hour, 14)
+        XCTAssertEqual(components.minute, 45)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testInitWithEventPrefillsFields() {
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let eventDate = calendar.date(from: DateComponents(year: 2027, month: 1, day: 8, hour: 9, minute: 5))!
+        let event = Event(title: "Morning Briefing", eventDate: eventDate, displayMode: .daysOnly)
+
+        let viewModel = EventFormViewModel(event: event)
+
+        XCTAssertEqual(viewModel.title, "Morning Briefing")
+        XCTAssertEqual(viewModel.displayMode, .daysOnly)
+        XCTAssertEqual(viewModel.eventDate, eventDate)
+        XCTAssertEqual(viewModel.eventTime, eventDate)
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+    func testApplyUpdatesEventFromDraft() {
+        let originalDate = Date(timeIntervalSince1970: 10_000)
+        let event = Event(title: "Before", eventDate: originalDate, displayMode: .full)
+        let viewModel = EventFormViewModel(event: event)
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
+        viewModel.title = "  After  "
+        viewModel.eventDate = calendar.date(from: DateComponents(year: 2028, month: 12, day: 1))!
+        viewModel.eventTime = calendar.date(from: DateComponents(hour: 22, minute: 30))!
+        viewModel.displayMode = .monthsOnly
 
+        viewModel.apply(to: event)
+
+        XCTAssertEqual(event.title, "After")
+        XCTAssertEqual(event.displayMode, .monthsOnly)
+
+        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: event.eventDate)
+        XCTAssertEqual(components.year, 2028)
+        XCTAssertEqual(components.month, 12)
+        XCTAssertEqual(components.day, 1)
+        XCTAssertEqual(components.hour, 22)
+        XCTAssertEqual(components.minute, 30)
+    }
 }

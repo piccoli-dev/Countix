@@ -5,9 +5,15 @@ struct WidgetEventSnapshot: Codable, Identifiable, Hashable {
     let title: String
     let eventDate: Date
     let displayModeRawValue: String
+    let gradientPresetRawValue: String?
+    let backgroundImageFileName: String?
 
     var displayMode: WidgetDisplayMode {
         WidgetDisplayMode(rawValue: displayModeRawValue) ?? .full
+    }
+
+    var gradientPreset: WidgetPreviewGradientPreset {
+        WidgetPreviewGradientPreset(rawValue: gradientPresetRawValue ?? "") ?? .blue
     }
 }
 
