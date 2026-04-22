@@ -5,6 +5,8 @@ struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @Query(sort: \Event.eventDate, order: .forward) private var events: [Event]
     @StateObject private var viewModel = HomeViewModel()
+    @State private var editingEvent: Event?
+    @State private var pendingDeletionEvent: Event?
 
     var filteredEvents: [Event] {
         viewModel.filteredEvents(from: events)
@@ -13,7 +15,9 @@ struct HomeView: View {
     private var syncToken: String {
         events
             .sorted { $0.eventDate < $1.eventDate }
-            .map { "\($0.id.uuidString)|\($0.title)|\($0.eventDate.timeIntervalSince1970)|\($0.displayMode.rawValue)" }
+            .map {
+                "\($0.id.uuidString)|\($0.title)|\($0.eventDate.timeIntervalSince1970)|\($0.displayMode.rawValue)|\($0.gradientPresetRawValue ?? "-")|\($0.backgroundImageFileName ?? "-")"
+            }
             .joined(separator: "::")
     }
 
@@ -62,12 +66,46 @@ struct HomeView: View {
             SharedEventStore.save(events: events)
         }
         .sheet(isPresented: $viewModel.isPresentingForm) {
-            EventFormView { newEvent in
-                modelContext.insert(newEvent)
-                try? modelContext.save()
+            EventFormView { draft in
+                createEvent(from: draft)
             }
             .presentationDetents([.large])
             .presentationDragIndicator(.visible)
+        }
+        .sheet(item: $editingEvent) { event in
+            EventFormView(
+                existingEvent: event,
+                onSave: { draft in
+                    updateEvent(event, with: draft)
+                },
+                onDelete: {
+                    pendingDeletionEvent = event
+                }
+            )
+            .presentationDetents([.large])
+            .presentationDragIndicator(.visible)
+        }
+        .alert(
+            "Delete Event?",
+            isPresented: Binding(
+                get: { pendingDeletionEvent != nil },
+                set: { isPresented in
+                    if !isPresented {
+                        pendingDeletionEvent = nil
+                    }
+                }
+            ),
+            presenting: pendingDeletionEvent
+        ) { event in
+            Button("Delete", role: .destructive) {
+                deleteEvent(event)
+                pendingDeletionEvent = nil
+            }
+            Button("Cancel", role: .cancel) {
+                pendingDeletionEvent = nil
+            }
+        } message: { event in
+            Text("\"\(event.title)\" will be permanently removed.")
         }
     }
 
@@ -136,11 +174,65 @@ struct HomeView: View {
                 LazyVStack(spacing: Constants.spacing * 4) {
                     ForEach(filteredEvents) { event in
                         EventCardView(event: event)
+                            .contextMenu {
+                                Button {
+                                    editingEvent = event
+                                } label: {
+                                    Label("Edit", systemImage: "pencil")
+                                }
+
+                                Button(role: .destructive) {
+                                    pendingDeletionEvent = event
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
+                                }
+                            }
                     }
                 }
             }
         }
         .animation(.spring(response: 0.45, dampingFraction: 0.9), value: filteredEvents.map(\.id))
+    }
+
+    private func createEvent(from draft: EventDraft) {
+        let event = Event(
+            title: draft.title,
+            eventDate: draft.eventDate,
+            displayMode: draft.displayMode,
+            gradientPresetRawValue: draft.gradientPreset.rawValue
+        )
+
+        if let imageData = draft.backgroundImageData {
+            event.backgroundImageFileName = AppGroup.saveEventBackgroundImage(imageData, eventID: event.id)
+        }
+
+        modelContext.insert(event)
+        try? modelContext.save()
+    }
+
+    private func updateEvent(_ event: Event, with draft: EventDraft) {
+        event.title = draft.title
+        event.eventDate = draft.eventDate
+        event.displayMode = draft.displayMode
+        event.gradientPreset = draft.gradientPreset
+
+        if let imageData = draft.backgroundImageData {
+            if let previousFileName = event.backgroundImageFileName {
+                AppGroup.deleteEventBackgroundImage(fileName: previousFileName)
+            }
+            event.backgroundImageFileName = AppGroup.saveEventBackgroundImage(imageData, eventID: event.id)
+        } else if event.backgroundImageFileName != nil {
+            AppGroup.deleteEventBackgroundImage(fileName: event.backgroundImageFileName)
+            event.backgroundImageFileName = nil
+        }
+
+        try? modelContext.save()
+    }
+
+    private func deleteEvent(_ event: Event) {
+        AppGroup.deleteEventBackgroundImage(fileName: event.backgroundImageFileName)
+        modelContext.delete(event)
+        try? modelContext.save()
     }
 }
 

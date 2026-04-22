@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct EventCardView: View {
     let event: Event
@@ -43,12 +44,45 @@ struct EventCardView: View {
             .padding(Constants.spacing * 5)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(cardBackground)
+            .clipped()
         }
     }
 
     private var cardBackground: some View {
         RoundedRectangle(cornerRadius: 28, style: .continuous)
             .fill(.ultraThinMaterial)
+            .overlay {
+                if let image = EventBackgroundImageStore.image(for: event.backgroundImageFileName) {
+                    HStack(spacing: 0) {
+                        Spacer(minLength: 0)
+                        Image(uiImage: image)
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: 148)
+                            .clipped()
+                            .overlay(
+                                LinearGradient(
+                                    colors: [Color.clear, Color.black.opacity(0.35)],
+                                    startPoint: .leading,
+                                    endPoint: .trailing
+                                )
+                            )
+                    }
+                    .mask(
+                        HStack(spacing: 0) {
+                            Spacer(minLength: 0)
+                            LinearGradient(
+                                colors: [Color.clear, Color.white],
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            )
+                            .frame(width: 190)
+                        }
+                    )
+                    .opacity(0.9)
+                    .clipShape(RoundedRectangle(cornerRadius: 28, style: .continuous))
+                }
+            }
             .overlay(
                 RoundedRectangle(cornerRadius: 28, style: .continuous)
                     .strokeBorder(.white.opacity(0.28), lineWidth: 1)
@@ -66,6 +100,27 @@ struct EventCardView: View {
                     .fill(isPassed ? Color.secondary.opacity(0.16) : Color.accentColor.opacity(0.14))
             )
             .foregroundStyle(isPassed ? AnyShapeStyle(.secondary) : AnyShapeStyle(Color.accentColor))
+    }
+}
+
+private enum EventBackgroundImageStore {
+    private static let cache = NSCache<NSString, UIImage>()
+
+    static func image(for fileName: String?) -> UIImage? {
+        guard let fileName else {
+            return nil
+        }
+
+        if let cached = cache.object(forKey: fileName as NSString) {
+            return cached
+        }
+
+        guard let loaded = AppGroup.loadEventBackgroundImage(fileName: fileName) else {
+            return nil
+        }
+
+        cache.setObject(loaded, forKey: fileName as NSString)
+        return loaded
     }
 }
 

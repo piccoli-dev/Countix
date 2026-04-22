@@ -15,7 +15,17 @@ enum WidgetSharedEventStore {
     }
 
     static func loadUpcomingEvent() -> WidgetEventSnapshot? {
+        loadEvent(with: nil)
+    }
+
+    static func loadEvent(with id: UUID?) -> WidgetEventSnapshot? {
+        let events = loadEvents()
+
+        if let id = id, let selectedEvent = events.first(where: { $0.id == id }) {
+            return selectedEvent
+        }
+
         let now = Date()
-        return loadEvents().first { $0.eventDate >= now } ?? loadEvents().first
+        return events.first { $0.eventDate >= now } ?? events.first
     }
 }
