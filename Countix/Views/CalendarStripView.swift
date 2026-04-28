@@ -52,7 +52,7 @@ struct CalendarStripView: View {
                 }
                 .buttonStyle(.plain)
 
-                Button("Today", action: onToday)
+                Button(L10n.tr("Today"), action: onToday)
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(.white)
                     .padding(.horizontal, Constants.spacing * 3.5)

@@ -16,7 +16,7 @@ struct GlassAddButton: View {
                         .foregroundStyle(.white)
                 }
 
-                Text("Add New Event")
+                Text(L10n.tr("Add New Event"))
                     .font(.headline.weight(.semibold))
                     .foregroundStyle(.white)
             }
@@ -46,7 +46,7 @@ struct GlassAddButton: View {
             }
         }
         .buttonStyle(.plain)
-        .accessibilityLabel("Add New Event")
+        .accessibilityLabel(L10n.tr("Add New Event"))
     }
 }
 

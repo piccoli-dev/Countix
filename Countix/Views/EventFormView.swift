@@ -64,11 +64,11 @@ struct EventFormView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     if formStep == .details {
-                        Button("Cancel") {
+                        Button(L10n.tr("Cancel")) {
                             dismiss()
                         }
                     } else {
-                        Button("Back") {
+                        Button(L10n.tr("Back")) {
                             withAnimation(.easeInOut(duration: 0.2)) {
                                 formStep = .details
                             }
@@ -104,23 +104,23 @@ struct EventFormView: View {
                 }
             }
         }
-        .alert("Delete Event?", isPresented: $isShowingDeleteAlert) {
-            Button("Delete", role: .destructive) {
+        .alert(L10n.tr("Delete Event?"), isPresented: $isShowingDeleteAlert) {
+            Button(L10n.tr("Delete"), role: .destructive) {
                 onDelete?()
                 dismiss()
             }
-            Button("Cancel", role: .cancel) {}
+            Button(L10n.tr("Cancel"), role: .cancel) {}
         } message: {
-            Text("This event will be permanently removed.")
+            Text(L10n.tr("This event will be permanently removed."))
         }
     }
 
     private var introCard: some View {
         VStack(alignment: .leading, spacing: Constants.spacing * 2.5) {
-            Text(existingEvent == nil ? "Design a new countdown" : "Refine your countdown")
+            Text(existingEvent == nil ? L10n.tr("Design a new countdown") : L10n.tr("Refine your countdown"))
                 .font(.title2.weight(.bold))
 
-            Text("Set title, date, time and display mode. Then set colors and optional image in preview before saving.")
+            Text(L10n.tr("Set title, date, time and display mode. Then set colors and optional image in preview before saving."))
                 .font(.body)
                 .foregroundStyle(.secondary)
         }
@@ -139,17 +139,17 @@ struct EventFormView: View {
     private var formCard: some View {
         VStack(alignment: .leading, spacing: 16) {
             fieldContainer(title: L10n.tr("Title")) {
-                TextField("Conference opening, anniversary, departure...", text: $viewModel.title)
+                TextField(L10n.tr("Conference opening, anniversary, departure..."), text: $viewModel.title)
                     .textInputAutocapitalization(.words)
                     .padding(Constants.spacing * 3.5)
                     .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
 
-            DatePicker("Event Date", selection: $viewModel.eventDate, displayedComponents: .date)
+            DatePicker(L10n.tr("Event Date"), selection: $viewModel.eventDate, displayedComponents: .date)
                 .datePickerStyle(.graphical)
 
             fieldContainer(title: L10n.tr("Time")) {
-                DatePicker("Event Time", selection: $viewModel.eventTime, displayedComponents: .hourAndMinute)
+                DatePicker(L10n.tr("Event Time"), selection: $viewModel.eventTime, displayedComponents: .hourAndMinute)
                     .datePickerStyle(.wheel)
                     .labelsHidden()
             }
@@ -190,10 +190,10 @@ struct EventFormView: View {
 
     private var previewStep: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Widget Preview")
+            Text(L10n.tr("Widget Preview"))
                 .font(.title3.weight(.bold))
 
-            Text("Choose colors and optional image, then save.")
+            Text(L10n.tr("Choose colors and optional image, then save."))
                 .font(.body)
                 .foregroundStyle(.secondary)
 
@@ -204,7 +204,7 @@ struct EventFormView: View {
                 Button(role: .destructive) {
                     isShowingDeleteAlert = true
                 } label: {
-                    Label("Delete Event", systemImage: "trash")
+                    Label(L10n.tr("Delete Event"), systemImage: "trash")
                         .font(.subheadline.weight(.semibold))
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
@@ -240,7 +240,7 @@ struct EventFormView: View {
             fieldContainer(title: L10n.tr("Background Image (Optional)")) {
                 VStack(alignment: .leading, spacing: 12) {
                     PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
-                        Label("Choose Image", systemImage: "photo.on.rectangle")
+                        Label(L10n.tr("Choose Image"), systemImage: "photo.on.rectangle")
                             .font(.subheadline.weight(.semibold))
                             .padding(.horizontal, 14)
                             .padding(.vertical, 10)
@@ -260,11 +260,11 @@ struct EventFormView: View {
                             viewModel.backgroundImageData = nil
                             selectedPhotoItem = nil
                         } label: {
-                            Label("Remove Image", systemImage: "trash")
+                            Label(L10n.tr("Remove Image"), systemImage: "trash")
                                 .font(.subheadline.weight(.semibold))
                         }
                     } else {
-                        Text("No image selected")
+                        Text(L10n.tr("No image selected"))
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }

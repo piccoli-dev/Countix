@@ -13,7 +13,7 @@ struct EmptyStateView: View {
                 Text(verbatim: L10n.tr("No events for %@", DateFormatting.eventDate.string(from: selectedDate)))
                     .font(.title3.weight(.semibold))
 
-                Text("Pick another day from the calendar or create a new event to start your countdown collection.")
+                Text(L10n.tr("Pick another day from the calendar or create a new event to start your countdown collection."))
                     .font(.body)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

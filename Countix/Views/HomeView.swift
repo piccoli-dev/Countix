@@ -86,7 +86,7 @@ struct HomeView: View {
             .presentationDragIndicator(.visible)
         }
         .alert(
-            "Delete Event?",
+            L10n.tr("Delete Event?"),
             isPresented: Binding(
                 get: { pendingDeletionEvent != nil },
                 set: { isPresented in
@@ -97,11 +97,11 @@ struct HomeView: View {
             ),
             presenting: pendingDeletionEvent
         ) { event in
-            Button("Delete", role: .destructive) {
+            Button(L10n.tr("Delete"), role: .destructive) {
                 deleteEvent(event)
                 pendingDeletionEvent = nil
             }
-            Button("Cancel", role: .cancel) {
+            Button(L10n.tr("Cancel"), role: .cancel) {
                 pendingDeletionEvent = nil
             }
         } message: { event in
@@ -157,7 +157,7 @@ struct HomeView: View {
     private var eventsSection: some View {
         VStack(alignment: .leading, spacing: Constants.spacing * 4) {
             HStack {
-                Text("Events")
+                Text(L10n.tr("Events"))
                     .font(.title2.weight(.semibold))
 
                 Spacer()
@@ -178,13 +178,13 @@ struct HomeView: View {
                                 Button {
                                     editingEvent = event
                                 } label: {
-                                    Label("Edit", systemImage: "pencil")
+                                    Label(L10n.tr("Edit"), systemImage: "pencil")
                                 }
 
                                 Button(role: .destructive) {
                                     pendingDeletionEvent = event
                                 } label: {
-                                    Label("Delete", systemImage: "trash")
+                                    Label(L10n.tr("Delete"), systemImage: "trash")
                                 }
                             }
                     }
