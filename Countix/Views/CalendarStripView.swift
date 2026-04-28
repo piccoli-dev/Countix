@@ -39,21 +39,45 @@ struct CalendarStripView: View {
                 Spacer()
                 Button(action: onPreviousMonth) {
                     Image(systemName: "chevron.left")
+                        .foregroundStyle(.white)
                         .frame(width: 36, height: 36)
-                        .background(.thinMaterial, in: Circle())
+                        .background(
+                            LinearGradient(
+                                colors: [Constants.colors.purple.opacity(0.9), Constants.colors.peach.opacity(0.85)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            in: Circle()
+                        )
                 }
                 .buttonStyle(.plain)
 
                 Button("Today", action: onToday)
                     .font(.subheadline.weight(.semibold))
+                    .foregroundStyle(.white)
                     .padding(.horizontal, Constants.spacing * 3.5)
                     .padding(.vertical, Constants.spacing * 2.25)
-                    .background(.thinMaterial, in: Capsule())
+                    .background(
+                        LinearGradient(
+                            colors: [Constants.colors.purple.opacity(0.9), Constants.colors.peach.opacity(0.85)],
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ),
+                        in: Capsule()
+                    )
 
                 Button(action: onNextMonth) {
                     Image(systemName: "chevron.right")
+                        .foregroundStyle(.white)
                         .frame(width: 36, height: 36)
-                        .background(.thinMaterial, in: Circle())
+                        .background(
+                            LinearGradient(
+                                colors: [Constants.colors.purple.opacity(0.9), Constants.colors.peach.opacity(0.85)],
+                                startPoint: .topLeading,
+                                endPoint: .bottomTrailing
+                            ),
+                            in: Circle()
+                        )
                 }
                 .buttonStyle(.plain)
             }
@@ -101,12 +125,12 @@ struct CalendarStripView: View {
 
                 ZStack {
                     Circle()
-                        .fill(hasEvents ? Color.accentColor : Color.clear)
+                        .fill(hasEvents ? Constants.colors.purple : Color.clear)
                         .frame(width: 6, height: 6)
 
                     if isToday && !isSelected {
                         Circle()
-                            .strokeBorder(Color.accentColor.opacity(0.55), lineWidth: 1.5)
+                            .strokeBorder(Constants.colors.peach.opacity(0.75), lineWidth: 1.5)
                             .frame(width: 12, height: 12)
                     }
                 }
@@ -130,8 +154,8 @@ struct CalendarStripView: View {
     private var selectedBackground: LinearGradient {
         LinearGradient(
             colors: [
-                Color(red: 0.22, green: 0.46, blue: 0.95),
-                Color(red: 0.16, green: 0.70, blue: 0.89)
+                Constants.colors.purple,
+                Constants.colors.peach
             ],
             startPoint: .topLeading,
             endPoint: .bottomTrailing
@@ -144,7 +168,7 @@ struct CalendarStripView: View {
         }
 
         if isToday {
-            return Color.accentColor.opacity(0.42)
+            return Constants.colors.peach.opacity(0.55)
         }
 
         return .white.opacity(0.22)

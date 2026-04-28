@@ -52,72 +52,51 @@ struct CountixWidgetEntryView: View {
     var entry: CountixWidgetProvider.Entry
 
     var body: some View {
-        ZStack {
-            if let event = entry.event {
-                VStack(alignment: .leading, spacing: 10) {
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(event.title)
-                                .font(.headline.weight(.semibold))
-                                .lineLimit(2)
+        TimelineView(.periodic(from: entry.date, by: 1)) { context in
+            ZStack {
+                if let event = entry.event {
+                    let isPassed = event.eventDate < context.date
+                    let countdown = WidgetCountdownFormatter.countdownText(to: event.eventDate, mode: event.displayMode, now: context.date)
+                    CountdownCardContentView(
+                        title: event.title,
+                        dateTimeText: "\(WidgetDateFormatting.eventDate.string(from: event.eventDate)) • \(WidgetDateFormatting.eventTime.string(from: event.eventDate))",
+                        modeText: event.displayMode.shortLabel,
+                        modeSymbol: "timer",
+                        countdownText: countdown,
+                        statusText: isPassed ? NSLocalizedString("Passed", comment: "") : NSLocalizedString("Upcoming", comment: ""),
+                        isPassed: isPassed,
+                        primaryTextColor: .white,
+                        secondaryTextColor: .white.opacity(0.78),
+                        modeTextColor: .white.opacity(0.84),
+                        badgePassedBackground: Color.white.opacity(0.14),
+                        badgeUpcomingBackground: Color.white.opacity(0.22),
+                        badgeTextColor: .white
+                    )
+                } else {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Text("No Event Selected")
+                            .font(.headline.weight(.semibold))
+                            .foregroundStyle(.white)
 
-                            Text("\(WidgetDateFormatting.eventDate.string(from: event.eventDate)) • \(WidgetDateFormatting.eventTime.string(from: event.eventDate))")
-                                .font(.caption)
-                                .foregroundStyle(.white.opacity(0.78))
-                                .lineLimit(1)
-                        }
-
-                        Spacer()
-
-                        Text(event.displayMode.shortLabel)
-                            .font(.caption2.weight(.bold))
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 6)
-                            .background(.white.opacity(0.16), in: Capsule())
+                        Text("Open Countix and create an event to show a countdown on your Home Screen.")
+                            .font(.caption)
+                            .foregroundStyle(.white.opacity(0.82))
                     }
-
-                    Spacer(minLength: 0)
-
-                    Text(WidgetCountdownFormatter.countdownText(to: event.eventDate, mode: event.displayMode, now: entry.date))
-                        .font(.system(size: 16, weight: .bold, design: .rounded))
-                        .lineLimit(3)
-                        .minimumScaleFactor(0.8)
-
-                    Text(WidgetCountdownFormatter.relativeStatus(for: event.eventDate, now: entry.date))
-                        .font(.caption.weight(.medium))
-                        .foregroundStyle(.white.opacity(0.72))
+                    .padding(18)
                 }
-                .foregroundStyle(.white)
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("No Event Selected")
-                        .font(.headline.weight(.semibold))
-                        .foregroundStyle(.white)
-
-                    Text("Open Countix and create an event to show a countdown on your Home Screen.")
-                        .font(.caption)
-                        .foregroundStyle(.white.opacity(0.82))
-                }
-                .padding(18)
             }
         }
         .containerBackground(for: .widget) {
-            
             let backgroundImageFileName = entry.event?.backgroundImageFileName
             let colors = (entry.previewGradientPreset ?? entry.event?.gradientPreset ?? .blue).colors
-            
-            if let backgroundImageFileName = backgroundImageFileName,
-                let image = WidgetBackgroundImageStore.image(for: backgroundImageFileName) ?? WidgetPreviewImageStore.image(named: backgroundImageFileName) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-            }
-            LinearGradient(
-                colors: backgroundImageFileName != nil ? [colors[0], .clear] : colors,
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
+
+            CountdownCardBackgroundLayer(
+                fileName: backgroundImageFileName,
+                colors: colors,
+                resolveImage: { name in
+                    WidgetBackgroundImageStore.image(for: name) ?? WidgetPreviewImageStore.image(named: name)
+                },
             )
-            
         }
     }
 }
@@ -128,8 +107,8 @@ enum WidgetPreviewGradientPreset: String, CaseIterable {
     case green
     case yellow
     case purple
-    case black
-    case white
+    case primary
+    case secondary
     case red
     case lightBlue
     case pink
@@ -166,17 +145,17 @@ enum WidgetPreviewGradientPreset: String, CaseIterable {
                 Color(red: 0.36, green: 0.21, blue: 0.68),
                 Color(red: 0.66, green: 0.48, blue: 0.89)
             ]
-        case .black:
+        case .primary:
             return [
-                Color(red: 0.03, green: 0.03, blue: 0.04),
-                Color(red: 0.12, green: 0.12, blue: 0.14),
-                Color(red: 0.28, green: 0.28, blue: 0.31)
+                Color(uiColor: .label).opacity(0.95),
+                Color(uiColor: .label).opacity(0.75),
+                Color(uiColor: .label).opacity(0.55)
             ]
-        case .white:
+        case .secondary:
             return [
-                Color(red: 0.62, green: 0.64, blue: 0.67),
-                Color(red: 0.77, green: 0.79, blue: 0.82),
-                Color(red: 0.90, green: 0.91, blue: 0.93)
+                Color(uiColor: .secondaryLabel).opacity(0.95),
+                Color(uiColor: .secondaryLabel).opacity(0.75),
+                Color(uiColor: .secondaryLabel).opacity(0.55)
             ]
         case .red:
             return [
@@ -197,6 +176,13 @@ enum WidgetPreviewGradientPreset: String, CaseIterable {
                 Color(red: 0.95, green: 0.60, blue: 0.76)
             ]
         }
+    }
+
+    static func fromStored(rawValue: String?) -> WidgetPreviewGradientPreset {
+        guard let rawValue else { return .blue }
+        if rawValue == "black" { return .primary }
+        if rawValue == "white" { return .secondary }
+        return WidgetPreviewGradientPreset(rawValue: rawValue) ?? .blue
     }
 }
 

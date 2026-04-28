@@ -1,65 +1,70 @@
 import Foundation
 
 enum CountdownFormatter {
-    private static let calendar = Calendar.autoupdatingCurrent
-
     static func countdownText(to targetDate: Date, mode: DisplayMode, now: Date = .now) -> String {
         guard targetDate >= now else {
-            return "Event passed"
+            return L10n.tr("Event passed")
         }
 
-        switch mode {
-        case .full:
-            return fullCountdown(to: targetDate, now: now)
-        case .monthsOnly:
-            let months = totalMonths(from: now, to: targetDate)
-            return formattedUnit(months, singular: "month", plural: "months")
-        case .daysOnly:
-            let days = max(0, Int(targetDate.timeIntervalSince(now) / 86_400))
-            return formattedUnit(days, singular: "day", plural: "days")
-        case .minutesOnly:
-            let minutes = max(0, Int(targetDate.timeIntervalSince(now) / 60))
-            return formattedUnit(minutes, singular: "minute", plural: "minutes")
-        case .secondsOnly:
-            let seconds = max(0, Int(targetDate.timeIntervalSince(now)))
-            return formattedUnit(seconds, singular: "second", plural: "seconds")
+        let selectedUnits = mode.isEmpty ? DisplayMode.all.units : mode.units
+        var remainingSeconds = max(0, Int(targetDate.timeIntervalSince(now)))
+        var parts: [String] = []
+
+        for unit in selectedUnits {
+            let unitSeconds = seconds(for: unit)
+            guard unitSeconds > 0 else {
+                continue
+            }
+
+            let value: Int
+            if unit == selectedUnits.last {
+                value = remainingSeconds
+            } else {
+                value = remainingSeconds / unitSeconds
+                remainingSeconds %= unitSeconds
+            }
+
+            parts.append(formattedUnit(value, unit: unit))
         }
+
+        return parts.joined(separator: ", ")
     }
 
     static func relativeStatus(for targetDate: Date, now: Date = .now) -> String {
-        targetDate >= now ? "Upcoming" : "Passed"
+        targetDate >= now ? L10n.tr("Upcoming") : L10n.tr("Passed")
     }
 
-    private static func fullCountdown(to targetDate: Date, now: Date) -> String {
-        let components = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: now, to: targetDate)
-        let years = max(0, components.year ?? 0)
-        let months = max(0, components.month ?? 0)
-        let days = max(0, components.day ?? 0)
-        let minutes = max(0, (components.hour ?? 0) * 60 + (components.minute ?? 0))
-        let seconds = max(0, components.second ?? 0)
-
-        let parts = [
-            years > 0 ? formattedUnit(years, singular: "year", plural: "years") : nil,
-            months > 0 ? formattedUnit(months, singular: "month", plural: "months") : nil,
-            days > 0 ? formattedUnit(days, singular: "day", plural: "days") : nil,
-            minutes > 0 ? formattedUnit(minutes, singular: "minute", plural: "minutes") : nil,
-            formattedUnit(seconds, singular: "second", plural: "seconds")
-        ]
-
-        return parts.compactMap { $0 }.joined(separator: ", ")
+    private static func seconds(for unit: CountdownUnit) -> Int {
+        switch unit {
+        case .years:
+            return 365 * 24 * 60 * 60
+        case .months:
+            return 30 * 24 * 60 * 60
+        case .days:
+            return 24 * 60 * 60
+        case .hours:
+            return 60 * 60
+        case .minutes:
+            return 60
+        case .seconds:
+            return 1
+        }
     }
 
-    private static func totalMonths(from startDate: Date, to endDate: Date) -> Int {
-        let start = calendar.dateComponents([.year, .month], from: startDate)
-        let end = calendar.dateComponents([.year, .month], from: endDate)
-
-        let years = (end.year ?? 0) - (start.year ?? 0)
-        let months = (end.month ?? 0) - (start.month ?? 0)
-
-        return max(0, (years * 12) + months)
-    }
-
-    private static func formattedUnit(_ value: Int, singular: String, plural: String) -> String {
-        "\(value) \(value == 1 ? singular : plural)"
+    private static func formattedUnit(_ value: Int, unit: CountdownUnit) -> String {
+        switch unit {
+        case .years:
+            return L10n.tr(value == 1 ? "%d year" : "%d years", value)
+        case .months:
+            return L10n.tr(value == 1 ? "%d month" : "%d months", value)
+        case .days:
+            return L10n.tr(value == 1 ? "%d day" : "%d days", value)
+        case .hours:
+            return L10n.tr(value == 1 ? "%d hour" : "%d hours", value)
+        case .minutes:
+            return L10n.tr(value == 1 ? "%d minute" : "%d minutes", value)
+        case .seconds:
+            return L10n.tr(value == 1 ? "%d second" : "%d seconds", value)
+        }
     }
 }

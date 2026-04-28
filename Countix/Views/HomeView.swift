@@ -105,15 +105,15 @@ struct HomeView: View {
                 pendingDeletionEvent = nil
             }
         } message: { event in
-            Text("\"\(event.title)\" will be permanently removed.")
+            Text(verbatim: L10n.tr("\"%@\" will be permanently removed.", event.title))
         }
     }
 
     private var backgroundView: some View {
         LinearGradient(
             colors: [
-                Color(red: 0.95, green: 0.97, blue: 1.0),
-                Color(red: 0.89, green: 0.93, blue: 0.99),
+                Constants.colors.screenBackgroundTop,
+                Constants.colors.screenBackgroundMid,
                 Color(.systemBackground)
             ],
             startPoint: .topLeading,
@@ -121,14 +121,14 @@ struct HomeView: View {
         )
         .overlay(alignment: .topTrailing) {
             Circle()
-                .fill(Color.blue.opacity(0.12))
+                .fill(Constants.colors.purple.opacity(0.14))
                 .frame(width: 240, height: 240)
                 .blur(radius: 20)
                 .offset(x: 80, y: -70)
         }
         .overlay(alignment: .topLeading) {
             Circle()
-                .fill(Color.cyan.opacity(0.16))
+                .fill(Constants.colors.peach.opacity(0.16))
                 .frame(width: 180, height: 180)
                 .blur(radius: 20)
                 .offset(x: -70, y: -50)
@@ -146,8 +146,8 @@ struct HomeView: View {
                 .foregroundStyle(.secondary)
 
             HStack(spacing: Constants.spacing * 2.5) {
-                Label("\(events.count) total", systemImage: "clock.badge")
-                Label("\(filteredEvents.count) today", systemImage: "calendar")
+                Label(L10n.tr("%d total", events.count), systemImage: "clock.badge")
+                Label(L10n.tr("%d today", filteredEvents.count), systemImage: "calendar")
             }
             .font(.subheadline.weight(.medium))
             .foregroundStyle(.secondary)

@@ -15,12 +15,10 @@ struct CountixApp: App {
             Event.self
         ])
 
-        let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
         do {
-            return try ModelContainer(for: schema, configurations: configuration)
+            return try makeModelContainer(schema: schema)
         } catch {
-            fatalError("Unable to create ModelContainer: \(error)")
+            fatalError("Unable to create persistent ModelContainer: \(error)")
         }
     }()
 
@@ -29,5 +27,13 @@ struct CountixApp: App {
             HomeView()
         }
         .modelContainer(sharedModelContainer)
+    }
+
+    private static func makeModelContainer(schema: Schema) throws -> ModelContainer {
+        let configuration = ModelConfiguration(
+            schema: schema,
+            isStoredInMemoryOnly: false
+        )
+        return try ModelContainer(for: schema, configurations: configuration)
     }
 }

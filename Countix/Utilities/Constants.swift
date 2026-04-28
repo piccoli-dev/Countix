@@ -7,6 +7,45 @@ enum Constants {
         static let yellow = Color(hex: "#fcd46d")
         static let peach = Color(hex: "#fc957d")
         static let purple = Color(hex: "#5b42fc")
+
+        static let screenBackgroundTop = Color(
+            uiColor: UIColor { trait in
+                trait.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.09, green: 0.10, blue: 0.13, alpha: 1)
+                    : UIColor(red: 0.95, green: 0.97, blue: 1.0, alpha: 1)
+            }
+        )
+        static let screenBackgroundMid = Color(
+            uiColor: UIColor { trait in
+                trait.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.12, green: 0.14, blue: 0.18, alpha: 1)
+                    : UIColor(red: 0.89, green: 0.93, blue: 0.99, alpha: 1)
+            }
+        )
+        static let formBackgroundSecondary = Color(
+            uiColor: UIColor { trait in
+                trait.userInterfaceStyle == .dark
+                    ? UIColor(red: 0.13, green: 0.15, blue: 0.19, alpha: 1)
+                    : UIColor(red: 0.93, green: 0.96, blue: 1.0, alpha: 1)
+            }
+        )
+
+        static let accentBlue = Color(hex: "#3875F2")
+        static let accentCyan = Color(hex: "#29B3E3")
+        static let deepBlue = Color(hex: "#1F345C")
+
+        static let white = Color.white
+        static let black = Color.black
+        static let clear = Color.clear
+
+        static let primaryShadow = Color.black.opacity(0.08)
+        static let borderWhite = Color.white.opacity(0.28)
+        static let borderWhiteSoft = Color.white.opacity(0.26)
+
+        static let badgePassedBackground = Color.secondary.opacity(0.16)
+        static let badgeUpcomingBackground = Color.accentColor.opacity(0.14)
+        static let presetSelectedBackground = Color.accentColor.opacity(0.12)
+        static let presetUnselectedBorder = Color.secondary.opacity(0.25)
     }
 
     /// Base spacing unit (4).

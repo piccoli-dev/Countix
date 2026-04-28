@@ -63,4 +63,19 @@ final class CountixTests: XCTestCase {
         XCTAssertEqual(components.hour, 22)
         XCTAssertEqual(components.minute, 30)
     }
+
+    func testCountdownConvertsMonthsToDaysWhenMonthsAreNotSelected() {
+        let now = Date(timeIntervalSince1970: 0)
+        let target = now.addingTimeInterval(60 * 24 * 60 * 60)
+        let text = CountdownFormatter.countdownText(to: target, mode: .daysOnly, now: now)
+        XCTAssertEqual(text, "60 days")
+    }
+
+    func testCountdownBreakdownForSelectedUnits() {
+        let now = Date(timeIntervalSince1970: 0)
+        let target = now.addingTimeInterval((60 * 24 * 60 * 60) + (20 * 60) + 10)
+        let mode: DisplayMode = [.days, .minutes, .seconds]
+        let text = CountdownFormatter.countdownText(to: target, mode: mode, now: now)
+        XCTAssertEqual(text, "60 days, 20 minutes, 10 seconds")
+    }
 }

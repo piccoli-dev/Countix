@@ -8,8 +8,8 @@ final class HomeViewModel: ObservableObject {
 
     private let calendar = Calendar.autoupdatingCurrent
 
-    var title: String { "Event Countdown" }
-    var subtitle: String { "Your premium timeline for the moments that matter." }
+    var title: String { L10n.tr("Event Countdown") }
+    var subtitle: String { L10n.tr("Your premium timeline for the moments that matter.") }
 
     init() {
         selectedDate = calendar.startOfDay(for: .now)

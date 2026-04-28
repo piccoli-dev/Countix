@@ -76,6 +76,11 @@
 			path = CountixWidgetExtension;
 			sourceTree = "<group>";
 		};
+		63B200012F961F2B0041BC54 /* Shared */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Shared;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				630B3DC02F961F2A0041BC54 /* Countix */,
+				63B200012F961F2B0041BC54 /* Shared */,
 				630B3DCE2F961F2B0041BC54 /* CountixTests */,
 				630B3DD82F961F2B0041BC54 /* CountixUITests */,
 				63A100012F961F2B0041BC54 /* CountixWidgetExtension */,
@@ -151,6 +157,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				630B3DC02F961F2A0041BC54 /* Countix */,
+				63B200012F961F2B0041BC54 /* Shared */,
 			);
 			name = Countix;
 			packageProductDependencies = (
@@ -219,6 +226,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				63A100012F961F2B0041BC54 /* CountixWidgetExtension */,
+				63B200012F961F2B0041BC54 /* Shared */,
 			);
 			name = CountixWidgetExtension;
 			packageProductDependencies = (
@@ -259,6 +267,7 @@
 			knownRegions = (
 				en,
 				Base,
+				it,
 			);
 			mainGroup = 630B3DB52F961F2A0041BC54;
 			minimizedProjectReferenceProxies = 1;

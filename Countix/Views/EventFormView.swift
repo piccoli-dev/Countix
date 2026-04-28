@@ -20,13 +20,18 @@ struct EventFormView: View {
 
     init(
         existingEvent: Event? = nil,
+        previewBackgroundImageData: Data? = nil,
         onSave: @escaping (EventDraft) -> Void,
         onDelete: (() -> Void)? = nil
     ) {
         self.existingEvent = existingEvent
         self.onSave = onSave
         self.onDelete = onDelete
-        _viewModel = StateObject(wrappedValue: EventFormViewModel(event: existingEvent))
+        let vm = EventFormViewModel(event: existingEvent)
+        if let previewBackgroundImageData {
+            vm.backgroundImageData = previewBackgroundImageData
+        }
+        _viewModel = StateObject(wrappedValue: vm)
     }
 
     var body: some View {
@@ -35,7 +40,7 @@ struct EventFormView: View {
                 LinearGradient(
                     colors: [
                         Color(.systemBackground),
-                        Color(red: 0.93, green: 0.96, blue: 1.0)
+                        Constants.colors.formBackgroundSecondary
                     ],
                     startPoint: .topLeading,
                     endPoint: .bottomTrailing
@@ -126,14 +131,14 @@ struct EventFormView: View {
                 .fill(.regularMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 28, style: .continuous)
-                        .strokeBorder(.white.opacity(0.26), lineWidth: 1)
+                        .strokeBorder(Constants.colors.borderWhiteSoft, lineWidth: 1)
                 )
         )
     }
 
     private var formCard: some View {
         VStack(alignment: .leading, spacing: 16) {
-            fieldContainer(title: "Title") {
+            fieldContainer(title: L10n.tr("Title")) {
                 TextField("Conference opening, anniversary, departure...", text: $viewModel.title)
                     .textInputAutocapitalization(.words)
                     .padding(Constants.spacing * 3.5)
@@ -143,20 +148,33 @@ struct EventFormView: View {
             DatePicker("Event Date", selection: $viewModel.eventDate, displayedComponents: .date)
                 .datePickerStyle(.graphical)
 
-            fieldContainer(title: "Time") {
+            fieldContainer(title: L10n.tr("Time")) {
                 DatePicker("Event Time", selection: $viewModel.eventTime, displayedComponents: .hourAndMinute)
                     .datePickerStyle(.wheel)
                     .labelsHidden()
             }
 
-            fieldContainer(title: "Display Mode") {
-                Picker("Display Mode", selection: $viewModel.displayMode) {
-                    ForEach(DisplayMode.allCases) { mode in
-                        Label(mode.title, systemImage: mode.symbolName)
-                            .tag(mode)
+            fieldContainer(title: L10n.tr("Display Mode")) {
+                VStack(alignment: .leading, spacing: 10) {
+                    ForEach(CountdownUnit.allCases) { unit in
+                        Toggle(isOn: Binding(
+                            get: { viewModel.displayMode.containsFlag(for: unit) },
+                            set: { isOn in
+                                if isOn {
+                                    viewModel.displayMode.insertFlag(for: unit)
+                                } else {
+                                    viewModel.displayMode.removeFlag(for: unit)
+                                    if viewModel.displayMode.isEmpty {
+                                        viewModel.displayMode.insertFlag(for: unit)
+                                    }
+                                }
+                            }
+                        )) {
+                            Label(unit.title, systemImage: unit.symbolName)
+                                .font(.subheadline.weight(.medium))
+                        }
                     }
                 }
-                .pickerStyle(.inline)
             }
         }
         .padding(Constants.spacing * 5)
@@ -165,7 +183,7 @@ struct EventFormView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 30, style: .continuous)
-                        .strokeBorder(.white.opacity(0.26), lineWidth: 1)
+                        .strokeBorder(Constants.colors.borderWhiteSoft, lineWidth: 1)
                 )
         )
     }
@@ -201,14 +219,14 @@ struct EventFormView: View {
                 .fill(.ultraThinMaterial)
                 .overlay(
                     RoundedRectangle(cornerRadius: 30, style: .continuous)
-                        .strokeBorder(.white.opacity(0.26), lineWidth: 1)
+                        .strokeBorder(Constants.colors.borderWhiteSoft, lineWidth: 1)
                 )
         )
     }
 
     private var previewStyleCard: some View {
         VStack(alignment: .leading, spacing: 14) {
-            fieldContainer(title: "Color Options") {
+            fieldContainer(title: L10n.tr("Color Options")) {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 10) {
                         ForEach(EventGradientPreset.allCases) { preset in
@@ -219,7 +237,7 @@ struct EventFormView: View {
                 }
             }
 
-            fieldContainer(title: "Background Image (Optional)") {
+            fieldContainer(title: L10n.tr("Background Image (Optional)")) {
                 VStack(alignment: .leading, spacing: 12) {
                     PhotosPicker(selection: $selectedPhotoItem, matching: .images) {
                         Label("Choose Image", systemImage: "photo.on.rectangle")
@@ -279,12 +297,12 @@ struct EventFormView: View {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(isSelected ? Color.accentColor.opacity(0.12) : Color.clear)
+                    .fill(isSelected ? Constants.colors.presetSelectedBackground : Constants.colors.clear)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                     .strokeBorder(
-                        isSelected ? Color.accentColor : Color.secondary.opacity(0.25),
+                        isSelected ? Color.accentColor : Constants.colors.presetUnselectedBorder,
                         lineWidth: isSelected ? 1.5 : 1
                     )
             )
@@ -354,7 +372,7 @@ struct EventFormView: View {
                         .clipped()
                         .overlay(
                             LinearGradient(
-                                colors: [Color.clear, Color.black.opacity(0.45)],
+                                colors: [Constants.colors.clear, Constants.colors.black.opacity(0.45)],
                                 startPoint: .leading,
                                 endPoint: .trailing
                             )
@@ -364,7 +382,7 @@ struct EventFormView: View {
                     HStack(spacing: 0) {
                         Spacer(minLength: 0)
                         LinearGradient(
-                            colors: [Color.clear, Color.white],
+                            colors: [Constants.colors.clear, Constants.colors.white],
                             startPoint: .leading,
                             endPoint: .trailing
                         )
@@ -386,21 +404,28 @@ struct EventFormView: View {
 
     private var navigationTitle: String {
         if formStep == .preview {
-            return "Preview"
+            return L10n.tr("Preview")
         }
-        return existingEvent == nil ? "New Event" : "Edit Event"
+        return existingEvent == nil ? L10n.tr("New Event") : L10n.tr("Edit Event")
     }
 
     private var trailingActionTitle: String {
         if formStep == .details {
-            return "Preview"
+            return L10n.tr("Preview")
         }
-        return existingEvent == nil ? "Save" : "Update"
+        return existingEvent == nil ? L10n.tr("Save") : L10n.tr("Update")
     }
 }
 
 struct EventFormView_Previews: PreviewProvider {
+    private static var samplePreviewImageData: Data? {
+        UIImage(named: "japan")?.jpegData(compressionQuality: 0.95)
+    }
+
     static var previews: some View {
-        EventFormView(onSave: { _ in })
+        EventFormView(
+            previewBackgroundImageData: samplePreviewImageData,
+            onSave: { _ in }
+        )
     }
 }

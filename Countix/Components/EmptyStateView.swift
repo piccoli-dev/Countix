@@ -10,7 +10,7 @@ struct EmptyStateView: View {
                 .foregroundStyle(.secondary)
 
             VStack(spacing: 8) {
-                Text("No events for \(DateFormatting.eventDate.string(from: selectedDate))")
+                Text(verbatim: L10n.tr("No events for %@", DateFormatting.eventDate.string(from: selectedDate)))
                     .font(.title3.weight(.semibold))
 
                 Text("Pick another day from the calendar or create a new event to start your countdown collection.")

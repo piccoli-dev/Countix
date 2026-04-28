@@ -31,9 +31,8 @@ struct GlassAddButton: View {
                         .fill(
                             LinearGradient(
                                 colors: [
-                                    Color(red: 0.22, green: 0.46, blue: 0.95).opacity(0.72),
-                                    Color(red: 0.16, green: 0.70, blue: 0.89).opacity(0.58),
-                                    Color.white.opacity(0.10)
+                                    Constants.colors.purple,
+                                    Constants.colors.peach,
                                 ],
                                 startPoint: .topLeading,
                                 endPoint: .bottomTrailing
@@ -56,8 +55,8 @@ struct GlassAddButton_Previews: PreviewProvider {
         ZStack {
             LinearGradient(
                 colors: [
-                    Color(red: 0.12, green: 0.20, blue: 0.36),
-                    Color(red: 0.26, green: 0.45, blue: 0.68)
+                    Constants.colors.purple.opacity(0.9),
+                    Constants.colors.peach.opacity(0.8)
                 ],
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing

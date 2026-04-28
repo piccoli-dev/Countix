@@ -6,8 +6,8 @@ enum EventGradientPreset: String, CaseIterable, Codable, Identifiable {
     case green
     case yellow
     case purple
-    case black
-    case white
+    case primary
+    case secondary
     case red
     case lightBlue
     case pink
@@ -16,16 +16,16 @@ enum EventGradientPreset: String, CaseIterable, Codable, Identifiable {
 
     var title: String {
         switch self {
-        case .blue: return "Blue"
-        case .orange: return "Orange"
-        case .green: return "Green"
-        case .yellow: return "Yellow"
-        case .purple: return "Purple"
-        case .black: return "Black"
-        case .white: return "White"
-        case .red: return "Red"
-        case .lightBlue: return "Light Blue"
-        case .pink: return "Pink"
+        case .blue: return L10n.tr("Blue")
+        case .orange: return L10n.tr("Orange")
+        case .green: return L10n.tr("Green")
+        case .yellow: return L10n.tr("Yellow")
+        case .purple: return L10n.tr("Purple")
+        case .primary: return L10n.tr("Primary")
+        case .secondary: return L10n.tr("Secondary")
+        case .red: return L10n.tr("Red")
+        case .lightBlue: return L10n.tr("Light Blue")
+        case .pink: return L10n.tr("Pink")
         }
     }
 
@@ -61,17 +61,17 @@ enum EventGradientPreset: String, CaseIterable, Codable, Identifiable {
                 Color(red: 0.36, green: 0.21, blue: 0.68),
                 Color(red: 0.66, green: 0.48, blue: 0.89)
             ]
-        case .black:
+        case .primary:
             return [
-                Color(red: 0.03, green: 0.03, blue: 0.04),
-                Color(red: 0.12, green: 0.12, blue: 0.14),
-                Color(red: 0.28, green: 0.28, blue: 0.31)
+                Color.primary.opacity(0.95),
+                Color.primary.opacity(0.75),
+                Color.primary.opacity(0.55)
             ]
-        case .white:
+        case .secondary:
             return [
-                Color(red: 0.62, green: 0.64, blue: 0.67),
-                Color(red: 0.77, green: 0.79, blue: 0.82),
-                Color(red: 0.90, green: 0.91, blue: 0.93)
+                Color.secondary.opacity(0.95),
+                Color.secondary.opacity(0.75),
+                Color.secondary.opacity(0.55)
             ]
         case .red:
             return [
@@ -92,5 +92,12 @@ enum EventGradientPreset: String, CaseIterable, Codable, Identifiable {
                 Color(red: 0.95, green: 0.60, blue: 0.76)
             ]
         }
+    }
+
+    static func fromStored(rawValue: String?) -> EventGradientPreset {
+        guard let rawValue else { return .blue }
+        if rawValue == "black" { return .primary }
+        if rawValue == "white" { return .secondary }
+        return EventGradientPreset(rawValue: rawValue) ?? .blue
     }
 }
