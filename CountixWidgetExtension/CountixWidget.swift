@@ -74,11 +74,11 @@ struct CountixWidgetEntryView: View {
                     )
                 } else {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text("No Event Selected")
+                        Text(NSLocalizedString("No Event Selected", comment: ""))
                             .font(.headline.weight(.semibold))
                             .foregroundStyle(.white)
 
-                        Text("Open Countix and create an event to show a countdown on your Home Screen.")
+                        Text(NSLocalizedString("Open Countix and create an event to show a countdown on your Home Screen.", comment: ""))
                             .font(.caption)
                             .foregroundStyle(.white.opacity(0.82))
                     }
@@ -302,8 +302,8 @@ struct CountixWidget: Widget {
         AppIntentConfiguration(kind: kind, intent: CountixIntent.self, provider: CountixWidgetProvider()) { entry in
             CountixWidgetEntryView(entry: entry)
         }
-        .configurationDisplayName("Event Countdown")
-        .description("Show the next Countix event on the Home Screen.")
+        .configurationDisplayName(NSLocalizedString("Event Countdown", comment: ""))
+        .description(NSLocalizedString("Show the next Countix event on the Home Screen.", comment: ""))
         .supportedFamilies([.systemSmall, .systemMedium])
     }
 }
